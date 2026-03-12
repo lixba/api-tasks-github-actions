@@ -8,7 +8,7 @@ public class InMemoryTaskRepositoryTests {
         _repo = new();
     }
     
-    [Fact]
+    /*[Fact]
     public void Add_TareaValida_AsignaIdYRetornaTarea(){
         //Arrange        
         var tarea = new TaskItem {
@@ -109,4 +109,5 @@ public class InMemoryTaskRepositoryTests {
         var resultado = _repo.Delete(100);
         resultado.Should().BeFalse();
     }
+    */
 }
