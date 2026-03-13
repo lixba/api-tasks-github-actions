@@ -42,6 +42,7 @@ jobs:
     name: "Deploy to dev"
     runs-on: ubuntu-latest
     needs: build # espera que se ejecute primero el CI
+    environment: dev
 
     steps:
       - name: Download artifacts
