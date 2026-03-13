@@ -40,52 +40,17 @@ jobs:
 
   deploy_dev: 
     name: "Deploy to dev"
-    runs-on: ubuntu-latest
     needs: build # espera que se ejecute primero el CI
-    environment: dev
+    uses: ./.github/workflows/step-deploy.yml
+    with:
+      env: dev
+      secrets: inherit
 
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: uv-artifacts
-          path: artifacts/
-
-      - name: Login Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENTE_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Deploy en Azure
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: app-api-uv-lixba-dev
-          package: artifacts/
+  deploy_prod:
+    name: Deploy Prod
+    needs: deploy_dev
+    uses: ./.github/workflows/step-deploy.yml
+    with:
+      env: prod
+      secrets: inherit
     
-  deploy_prod: 
-    name: "Deploy to prod"
-    runs-on: ubuntu-latest
-    needs: deploy_dev # espera que se ejecute primero el CIdeploy_dev
-    environment: prod
-
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: uv-artifacts
-          path: artifacts/
-
-      - name: Login Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENTE_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      - name: Deploy en Azure
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: app-api-uv-lixba-prod # nombre que pusimos en el portal de azure
-          package: artifacts/
